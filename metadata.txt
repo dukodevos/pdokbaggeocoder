@@ -1,5 +1,5 @@
 [general]
-name=PDOK BAG Geocoder
+name=PDOK BAG Geocoder 2
 qgisMinimumVersion=2.0
 description=QGIS plugin for finding Dutch XY coordinates from a CSV file with use of the BAG geocoder webservice from www.pdok.nl
 changelog:

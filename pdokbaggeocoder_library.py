@@ -31,6 +31,7 @@ import tempfile
 import urllib2
 import re
 import codecs
+import json
 #from re import sub
 
 
@@ -294,22 +295,22 @@ def pdokbaggeocoder(qgis, csvname, shapefilename, notfoundfile, keys, addlayer,c
 			
 		else:
 			try:
-				url = "http://geodata.nationaalgeoregister.nl/geocoder/Geocoder?zoekterm=" + total_address + selected_city
+				url = "http://geodata.nationaalgeoregister.nl/locatieserver/v3/free?q=" + total_address + selected_city
 					
 				# test output to print all weblinks
 				url_list.append(url)
 				try:
-					xml = urllib2.urlopen(url).read()
-					doc = parseString(xml)
-					xmlTag = doc.getElementsByTagName("gml:pos")[0].firstChild.nodeValue								
+					response = urllib2.urlopen(url)
+					data = json.loads(response.read())
+					points = data["response"]["docs"][0]["centroide_rd"]								
 					# if total_address is correctly written xmlTag exists:
-					if xmlTag:	
+					if points:	
 						remark=True
 						# split X and Y coordinate in list
-						XY = xmlTag.split()
+						XY = points.split()
 						if XY:
-							x = float(XY[0])
-							y = float(XY[1])
+							x = float(XY[0][6:])
+							y = float(XY[1][:-1])
 							print "%s" % x
 							print "%s" % y
 							# print address + ": " + str(x) + ", " + str(y)
